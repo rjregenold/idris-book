@@ -26,3 +26,14 @@ myMap f (x :: xs) = f x :: map f xs
 myMapVect : (a -> b) -> Vect len a -> Vect len b
 myMapVect f [] = []
 myMapVect f (x :: xs) = f x :: myMapVect f xs
+
+createEmpties : {n : _} -> Vect n (Vect 0 elem)
+createEmpties = replicate _ []
+
+transposeMat : {n : _} -> Vect m (Vect n elem) -> Vect n (Vect m elem)
+transposeMat [] = createEmpties
+transposeMat (x :: xs) = zipWith (::) x (transposeMat xs)
+
+addMatrix : Num a => Vect n (Vect m a) -> Vect n (Vect m a) -> Vect n (Vect m a)
+addMatrix [] [] = []
+addMatrix (x :: xs) (y :: ys) = zipWith (+) x y :: addMatrix xs ys
